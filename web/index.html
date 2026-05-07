@@ -9,23 +9,34 @@
   <body>
     <main class="wrap">
       <header class="head">
-        <h1>大陆标准繁体在线转换器</h1>
+        <div class="head-row">
+          <div class="head-title-block">
+            <h1>大陆标准繁体在线转换器</h1>
+            <p class="head-update">更新日期：2026-05-07</p>
+          </div>
+          <div id="status-capsule" class="status-capsule is-loading" role="status" aria-live="polite">
+            <span id="status" class="status-capsule__text">加载…</span>
+          </div>
+        </div>
       </header>
 
       <section class="panel">
         <div class="mode-list" role="radiogroup" aria-label="转换方案">
           <button type="button" class="mode-btn is-active" id="mode-tonggui" data-mode="tonggui">
-            简体 → 大陆标准繁体（通规）
+            简体 → 大陆标准繁体（《通用规范汉字表》）
           </button>
           <button type="button" class="mode-btn" id="mode-classical" data-mode="classical">
-            简体 → 古籍规范字形
+            简体 → 古籍规范字形（《古籍印刷通用规范字形表》）
           </button>
         </div>
 
         <div class="io-row">
           <div class="io-col">
-            <label for="input">输入原文</label>
-            <textarea id="input" rows="12" spellcheck="false" placeholder="在此粘贴或输入简体文本…">通用规范汉字表</textarea>
+            <div class="io-label-row">
+              <label for="input">输入原文</label>
+              <button type="button" id="clear-input" class="io-action-btn">清空</button>
+            </div>
+            <textarea id="input" rows="12" spellcheck="false" placeholder="在此粘贴或输入简体文本"></textarea>
           </div>
 
           <div class="io-mid">
@@ -38,11 +49,31 @@
                 />
               </svg>
             </button>
-            <p id="status" class="status" aria-live="polite">正在加载引擎…</p>
           </div>
 
           <div class="io-col">
-            <label for="output">转换结果</label>
+            <div class="io-label-row">
+              <label for="output">转换结果</label>
+              <div class="io-label-actions">
+                <div id="yuangu-heiti-wrap" class="yuangu-heiti-wrap" hidden>
+                  <input type="checkbox" id="use-yuangu-heiti" class="yuangu-heiti-check" />
+                  <label for="use-yuangu-heiti" class="yuangu-heiti-label">使用源古黑体</label>
+                </div>
+                <div class="font-size-control">
+                  <label for="font-size" class="font-size-heading">字号</label>
+                  <select id="font-size" class="font-size-select" aria-label="输入与输出区域字号">
+                    <option value="14">14px</option>
+                    <option value="15">15px</option>
+                    <option value="16" selected>16px</option>
+                    <option value="18">18px</option>
+                    <option value="20">20px</option>
+                    <option value="22">22px</option>
+                    <option value="24">24px</option>
+                  </select>
+                </div>
+                <button type="button" id="copy-output" class="io-action-btn">复制</button>
+              </div>
+            </div>
             <textarea id="output" rows="12" readonly spellcheck="false" placeholder="转换结果将显示在这里"></textarea>
           </div>
         </div>
