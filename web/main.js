@@ -19,8 +19,6 @@ const converters = { tonggui: null, classical: null };
 let activeMode = "tonggui";
 let convertLock = false;
 /** @type {ReturnType<typeof setTimeout> | null} */
-let autoConvertTimer = null;
-/** @type {ReturnType<typeof setTimeout> | null} */
 let inputDebounceTimer = null;
 
 const INPUT_DEBOUNCE_MS = 500;
@@ -40,9 +38,18 @@ function readyLabel() {
   return "● 就绪";
 }
 
-function applyModeUI() {
+function applyModeButtons() {
   modeTonggui.classList.toggle("is-active", activeMode === "tonggui");
   modeClassical.classList.toggle("is-active", activeMode === "classical");
+}
+
+/** 切换方案后：先完成转换更新输出，再同步「源古黑体」显隐与字体，避免出现「旧字形 + 新字体」的错觉 */
+async function convertThenSyncYuanguFont() {
+  if (!converters.tonggui || !converters.classical) {
+    syncYuanguHeitiOption();
+    return;
+  }
+  await performConvert();
   syncYuanguHeitiOption();
 }
 
@@ -50,9 +57,9 @@ function syncYuanguHeitiOption() {
   if (!yuanguHeitiWrap || !useYuanguHeitiEl || !output) return;
   if (activeMode === "classical") {
     yuanguHeitiWrap.hidden = false;
+    applyYuanguHeitiFont();
   } else {
     yuanguHeitiWrap.hidden = true;
-    useYuanguHeitiEl.checked = false;
     output.classList.remove("font-output-yuangu");
   }
 }
@@ -64,20 +71,6 @@ function applyYuanguHeitiFont() {
   } else {
     output.classList.remove("font-output-yuangu");
   }
-}
-
-function scheduleAutoConvertAfterModeChange() {
-  if (autoConvertTimer !== null) {
-    clearTimeout(autoConvertTimer);
-    autoConvertTimer = null;
-  }
-  if (!converters.tonggui || !converters.classical) return;
-  if (!input.value) return;
-
-  autoConvertTimer = setTimeout(() => {
-    autoConvertTimer = null;
-    void performConvert();
-  }, INPUT_DEBOUNCE_MS);
 }
 
 function scheduleDebouncedConvertFromInput() {
@@ -115,17 +108,17 @@ async function performConvert() {
 modeTonggui.addEventListener("click", () => {
   if (activeMode === "tonggui") return;
   activeMode = "tonggui";
-  applyModeUI();
+  applyModeButtons();
   if (converters.tonggui && converters.classical) setStatus(readyLabel(), "ready");
-  scheduleAutoConvertAfterModeChange();
+  void convertThenSyncYuanguFont();
 });
 
 modeClassical.addEventListener("click", () => {
   if (activeMode === "classical") return;
   activeMode = "classical";
-  applyModeUI();
+  applyModeButtons();
   if (converters.tonggui && converters.classical) setStatus(readyLabel(), "ready");
-  scheduleAutoConvertAfterModeChange();
+  void convertThenSyncYuanguFont();
 });
 
 async function init() {
@@ -161,6 +154,55 @@ function applyIoFontSize() {
 fontSizeEl?.addEventListener("change", applyIoFontSize);
 applyIoFontSize();
 
+/** 拖动任一输入/输出框调整高度时，两者保持同高（不能用两边高度的 max，否则拉短时另一侧仍是旧高度会无法变矮） */
+let ioHeightSyncLock = false;
+let ioSnapshotIn = 0;
+let ioSnapshotOut = 0;
+let ioSnapInitialized = false;
+
+function ioInitHeightSnapshots() {
+  if (!input || !output) return;
+  ioSnapshotIn = Math.round(input.offsetHeight);
+  ioSnapshotOut = Math.round(output.offsetHeight);
+  ioSnapInitialized = true;
+}
+
+function syncTextareaPairHeightPx(px) {
+  if (!input || !output || ioHeightSyncLock) return;
+  const hi = Math.round(input.offsetHeight);
+  const ho = Math.round(output.offsetHeight);
+  if (hi === px && ho === px) return;
+  ioHeightSyncLock = true;
+  input.style.height = `${px}px`;
+  output.style.height = `${px}px`;
+  /* 勿把 min-height 设成与 height 同值，否则浏览器无法用缩放手柄把框变矮 */
+  input.style.removeProperty("min-height");
+  output.style.removeProperty("min-height");
+  requestAnimationFrame(() => {
+    ioHeightSyncLock = false;
+  });
+}
+
+const ioResizeObserver = new ResizeObserver(() => {
+  if (ioHeightSyncLock || !input || !output) return;
+  if (!ioSnapInitialized) {
+    ioInitHeightSnapshots();
+    return;
+  }
+  const hi = Math.round(input.offsetHeight);
+  const ho = Math.round(output.offsetHeight);
+  const di = hi - ioSnapshotIn;
+  const doo = ho - ioSnapshotOut;
+  if (di === 0 && doo === 0) return;
+  const px = Math.abs(di) >= Math.abs(doo) ? hi : ho;
+  syncTextareaPairHeightPx(px);
+  ioSnapshotIn = px;
+  ioSnapshotOut = px;
+});
+ioResizeObserver.observe(input);
+ioResizeObserver.observe(output);
+ioInitHeightSnapshots();
+
 clearInputBtn?.addEventListener("click", () => {
   if (inputDebounceTimer !== null) {
     clearTimeout(inputDebounceTimer);
@@ -180,7 +222,7 @@ copyOutputBtn?.addEventListener("click", async () => {
   const text = output.value;
   try {
     await navigator.clipboard.writeText(text);
-    copyOutputBtn.textContent = "已复制！";
+    copyOutputBtn.textContent = "√";
     setTimeout(() => {
       copyOutputBtn.textContent = COPY_BTN_LABEL;
     }, 500);
@@ -193,5 +235,6 @@ copyOutputBtn?.addEventListener("click", async () => {
   }
 });
 
-applyModeUI();
+applyModeButtons();
+syncYuanguHeitiOption();
 init();

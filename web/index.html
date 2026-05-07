@@ -26,7 +26,7 @@
             简体 → 大陆标准繁体（《通用规范汉字表》）
           </button>
           <button type="button" class="mode-btn" id="mode-classical" data-mode="classical">
-            简体 → 古籍规范字形（《古籍印刷通用规范字形表》）
+            简体 → 古籍规范字形（《古籍印刷通用字规范字形表》）
           </button>
         </div>
 
@@ -58,6 +58,35 @@
                 <div id="yuangu-heiti-wrap" class="yuangu-heiti-wrap" hidden>
                   <input type="checkbox" id="use-yuangu-heiti" class="yuangu-heiti-check" />
                   <label for="use-yuangu-heiti" class="yuangu-heiti-label">使用源古黑体</label>
+                  <span class="yuangu-heiti-info-wrap">
+                    <button
+                      type="button"
+                      class="yuangu-heiti-info"
+                      aria-label="关于显示字体说明"
+                      aria-describedby="yuangu-heiti-tip-id"
+                    >
+                      <svg class="yuangu-heiti-info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.75" stroke="currentColor" stroke-width="1.25" />
+                        <path
+                          fill="currentColor"
+                          d="M8 4.35c.36 0 .65.29.65.65 0 .38-.29.68-.65.68a.67.67 0 01-.67-.68c0-.36.3-.65.67-.65zm-.75 2.15h1.5v5.15H7.25V6.5z"
+                        />
+                      </svg>
+                    </button>
+                    <span id="yuangu-heiti-tip-id" class="yuangu-heiti-tooltip" role="tooltip">
+                      古籍规范字形需专用字体（<a
+                        href="https://www.foundertype.com/index.php/FontInfo/index/id/6659"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >方正古籍规范宋</a
+                      >），受限于版权，本站改用<a
+                        href="https://zhuanlan.zhihu.com/p/1897044158293717296"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >源古黑体</a
+                      >替代。该字体高度还原标准字形，并修正了部分部件不统一的问题。
+                    </span>
+                  </span>
                 </div>
                 <div class="font-size-control">
                   <label for="font-size" class="font-size-heading">字号</label>
@@ -78,6 +107,54 @@
           </div>
         </div>
       </section>
+
+      <footer class="related-links">
+        <h2 class="related-links__title">相关链接</h2>
+        <ul class="related-links__list">
+          <li>
+            简体转大陆标准繁体的 OpenCC：<a
+              href="https://github.com/amorphobia/opencc-tonggui"
+              target="_blank"
+              rel="noopener noreferrer"
+              >opencc-tonggui（GitHub）</a
+            >
+          </li>
+          <li>
+            简体转古籍规范字形的 OpenCC：<a
+              href="https://github.com/forfudan/GujiCC"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GujiCC（GitHub）</a
+            >
+          </li>
+          <li>
+            源古黑体背景介绍：<a href="https://zhuanlan.zhihu.com/p/1897044158293717296" target="_blank" rel="noopener noreferrer"
+              >知乎专栏</a
+            >
+          </li>
+          <li>
+            《通用规范汉字表》：<a
+              href="https://zh.wikipedia.org/zh-cn/%E9%80%9A%E7%94%A8%E8%A7%84%E8%8C%83%E6%B1%89%E5%AD%97%E8%A1%A8"
+              target="_blank"
+              rel="noopener noreferrer"
+              >维基百科词条</a
+            >
+          </li>
+          <li>
+            《古籍印刷通用字规范字形表》：<a
+              href="https://zh.wikipedia.org/wiki/%E5%8F%A4%E7%B1%8D%E5%8D%B0%E5%88%B7%E9%80%9A%E7%94%A8%E5%AD%97%E8%A7%84%E8%8C%83%E5%AD%97%E5%BD%A2%E8%A1%A8"
+              target="_blank"
+              rel="noopener noreferrer"
+              >维基百科词条</a
+            >
+          </li>
+        </ul>
+        <p class="related-links__thanks">感谢以上开源项目与贡献者！</p>
+        <p class="related-links__owner">
+          站长：<a href="https://github.com/Xebec33" target="_blank" rel="noopener noreferrer">GitHub</a>
+          · <a href="https://xebec33.github.io/my-world/" target="_blank" rel="noopener noreferrer">个人博客</a>
+        </p>
+      </footer>
     </main>
     <script type="module" src="./main.js"></script>
   </body>

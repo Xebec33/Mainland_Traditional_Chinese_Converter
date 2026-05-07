@@ -52,6 +52,69 @@ body {
   padding: 1.5rem 1rem 2.5rem;
 }
 
+.related-links {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.related-links__title {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--fg);
+}
+
+.related-links__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style-type: disc;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.related-links__list li {
+  margin-bottom: 0.4rem;
+}
+
+.related-links__list li:last-child {
+  margin-bottom: 0;
+}
+
+.related-links__list a {
+  color: var(--accent);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.related-links__list a:hover {
+  color: var(--accent-hover);
+}
+
+.related-links__thanks {
+  margin: 0.85rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.related-links__owner {
+  margin: 0.45rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.related-links__owner a {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.related-links__owner a:hover {
+  color: var(--accent-hover);
+}
+
 .head {
   margin-bottom: 0.5rem;
 }
@@ -288,6 +351,107 @@ label {
   white-space: nowrap;
 }
 
+.yuangu-heiti-info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* 填补图标与气泡之间的空隙，便于鼠标移入气泡而不消失 */
+.yuangu-heiti-info-wrap::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: min(14rem, calc(100vw - 2rem));
+  height: 14px;
+  transform: translateX(-50%);
+  z-index: 79;
+}
+
+.yuangu-heiti-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.12rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: help;
+  line-height: 0;
+}
+
+.yuangu-heiti-info:hover {
+  color: var(--accent);
+}
+
+.yuangu-heiti-info:focus-visible {
+  outline: none;
+  color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.yuangu-heiti-info-icon {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+
+.yuangu-heiti-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(19rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--fg);
+  text-align: left;
+  background: var(--action-btn-bg);
+  border: 1px solid var(--action-btn-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--fg) 12%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 80;
+  transition: opacity 0.12s ease, visibility 0.12s ease;
+}
+
+.yuangu-heiti-info-wrap:hover .yuangu-heiti-tooltip,
+.yuangu-heiti-info-wrap:focus-within .yuangu-heiti-tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.yuangu-heiti-tooltip a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.yuangu-heiti-tooltip a:hover {
+  color: var(--accent-hover);
+}
+
+.yuangu-heiti-tooltip::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--action-btn-border);
+}
+
 .font-size-control {
   display: flex;
   align-items: center;
@@ -308,6 +472,17 @@ label {
   cursor: pointer;
   line-height: 1.35;
   white-space: nowrap;
+}
+
+/* 与「清空」同宽，复制成功显示「√」时仍不换行、居中 */
+#clear-input,
+#copy-output {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.35rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .io-action-btn:hover {
