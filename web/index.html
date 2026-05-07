@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenCC 通规 · 简转繁</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="head">
+        <h1>OpenCC 简繁转换（通用规范汉字）</h1>
+        <p class="sub">
+          使用本仓库的 <code>s2tg</code> 配置与词典，在浏览器中通过
+          <a href="https://www.npmjs.com/package/opencc-wasm" rel="noreferrer">opencc-wasm</a>
+          本地转换，文本不离开本机。
+        </p>
+      </header>
+
+      <section class="panel">
+        <div class="mode-list" role="radiogroup" aria-label="转换方案">
+          <button type="button" class="mode-btn is-active" id="mode-tonggui" data-mode="tonggui">
+            简体 → 大陆标准繁体（通规）
+          </button>
+          <button
+            type="button"
+            class="mode-btn"
+            id="mode-classical"
+            data-mode="classical"
+            disabled
+            title="即将支持"
+          >
+            简单 → 古籍规范字形
+          </button>
+        </div>
+
+        <div class="io-row">
+          <div class="io-col">
+            <label for="input">简体中文输入</label>
+            <textarea id="input" rows="12" spellcheck="false" placeholder="在此粘贴或输入简体文本…">通用规范汉字表</textarea>
+          </div>
+
+          <div class="io-mid">
+            <button type="button" id="convert" class="convert-circle" aria-label="执行转换" disabled>
+              <svg class="convert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </button>
+            <p id="status" class="status" aria-live="polite">正在加载引擎…</p>
+          </div>
+
+          <div class="io-col">
+            <label for="output">繁体输出</label>
+            <textarea id="output" rows="12" readonly spellcheck="false" placeholder="转换结果将显示在这里"></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

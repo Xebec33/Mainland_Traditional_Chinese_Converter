@@ -1,0 +1,12 @@
+{
+  "name": "opencc-tonggui-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync-dicts": "node scripts/sync-dicts.mjs",
+    "start": "node scripts/sync-dicts.mjs && npx --yes serve . -p 5173"
+  },
+  "dependencies": {
+    "opencc-wasm": "0.8.1"
+  }
+}
