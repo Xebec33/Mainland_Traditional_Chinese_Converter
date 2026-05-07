@@ -416,19 +416,23 @@ label {
   background: var(--action-btn-bg);
   border: 1px solid var(--action-btn-border);
   border-radius: 8px;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--fg) 12%, transparent);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.14);
   z-index: 80;
-  transition: opacity 0.12s ease, visibility 0.12s ease;
+  /* 用 display 隐藏：即使个别环境忽略 opacity/visibility，也不会把整段说明排版进正文 */
+  display: none;
+  pointer-events: none;
 }
 
 .yuangu-heiti-info-wrap:hover .yuangu-heiti-tooltip,
 .yuangu-heiti-info-wrap:focus-within .yuangu-heiti-tooltip {
-  opacity: 1;
-  visibility: visible;
+  display: block;
   pointer-events: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .yuangu-heiti-tooltip {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  }
 }
 
 .yuangu-heiti-tooltip a {
