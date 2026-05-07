@@ -13,6 +13,10 @@ const clearInputBtn = document.getElementById("clear-input");
 const copyOutputBtn = document.getElementById("copy-output");
 const yuanguHeitiWrap = document.getElementById("yuangu-heiti-wrap");
 const useYuanguHeitiEl = document.getElementById("use-yuangu-heiti");
+const yuanguHeitiLabel = document.querySelector(".yuangu-heiti-label");
+
+const YUANGU_HEITI_LABEL_FULL = "使用源古黑体";
+const YUANGU_HEITI_LABEL_SHORT = "源古黑体";
 
 /** @type {{ tonggui: ((t: string) => Promise<string>) | null, classical: ((t: string) => Promise<string>) | null }} */
 const converters = { tonggui: null, classical: null };
@@ -71,6 +75,31 @@ function applyYuanguHeitiFont() {
   } else {
     output.classList.remove("font-output-yuangu");
   }
+}
+
+/** 窄屏或典型触控手机环境：缩短文案省横向空间 */
+function shouldUseCompactYuanguHeitiLabel() {
+  if (typeof window.matchMedia !== "function") return false;
+  if (window.matchMedia("(max-width: 640px)").matches) return true;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const noHover = window.matchMedia("(hover: none)").matches;
+  return coarse && noHover;
+}
+
+function applyYuanguHeitiLabelMode() {
+  if (!yuanguHeitiLabel) return;
+  const compact = shouldUseCompactYuanguHeitiLabel();
+  yuanguHeitiLabel.textContent = compact ? YUANGU_HEITI_LABEL_SHORT : YUANGU_HEITI_LABEL_FULL;
+  yuanguHeitiLabel.title = compact ? YUANGU_HEITI_LABEL_FULL : "";
+}
+
+function bindYuanguHeitiLabelMediaListeners() {
+  if (typeof window.matchMedia !== "function") return;
+  const onChange = () => applyYuanguHeitiLabelMode();
+  window.matchMedia("(max-width: 640px)").addEventListener("change", onChange);
+  window.matchMedia("(pointer: coarse)").addEventListener("change", onChange);
+  window.matchMedia("(hover: none)").addEventListener("change", onChange);
+  window.addEventListener("orientationchange", () => requestAnimationFrame(applyYuanguHeitiLabelMode));
 }
 
 function scheduleDebouncedConvertFromInput() {
@@ -236,5 +265,7 @@ copyOutputBtn?.addEventListener("click", async () => {
 });
 
 applyModeButtons();
+applyYuanguHeitiLabelMode();
+bindYuanguHeitiLabelMediaListeners();
 syncYuanguHeitiOption();
 init();
