@@ -19,3 +19,5 @@
 - 《古籍印刷通用字规范字形表》：[维基百科词条](https://zh.wikipedia.org/wiki/%E5%8F%A4%E7%B1%8D%E5%8D%B0%E5%88%B7%E9%80%9A%E7%94%A8%E5%AD%97%E8%A7%84%E8%8C%83%E5%AD%97%E5%BD%A2%E8%A1%A8)
 
 感谢以上开源项目与贡献者！
+
+转换器在线使用：[大陆标准繁体在线转换器](https://xebec33.github.io/Mainland_Traditional_Chinese_Converter/)
