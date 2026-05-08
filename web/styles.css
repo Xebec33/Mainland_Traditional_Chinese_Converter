@@ -99,20 +99,54 @@ body {
   color: var(--fg);
 }
 
-.related-links__owner {
+.related-links__meta {
   margin: 0.45rem 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
   font-size: 0.875rem;
   line-height: 1.65;
   color: var(--muted);
 }
 
-.related-links__owner a {
+.related-links__meta .related-links__owner {
+  margin: 0;
+}
+
+.related-links__meta .related-links__owner a {
   color: var(--accent);
   font-weight: 500;
 }
 
-.related-links__owner a:hover {
+.related-links__meta .related-links__owner a:hover {
   color: var(--accent-hover);
+}
+
+.related-links__repo-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.related-links__repo-link {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.related-links__repo-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.related-links__repo-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--muted);
 }
 
 .head {
