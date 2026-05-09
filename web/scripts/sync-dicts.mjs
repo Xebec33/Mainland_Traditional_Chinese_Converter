@@ -17,6 +17,12 @@ const required = [
   { from: path.join(srcOpencc, "s2g.json"), to: path.join(destConfigDir, "s2g.json") },
   { from: path.join(srcOpencc, "SGPhrases.ocd2"), to: path.join(destDictDir, "SGPhrases.ocd2") },
   { from: path.join(srcOpencc, "SGCharacters.ocd2"), to: path.join(destDictDir, "SGCharacters.ocd2") },
+  { from: path.join(srcOpencc, "t2gov.json"), to: path.join(destConfigDir, "t2gov.json") },
+  { from: path.join(srcOpencc, "TGPhrases.ocd2"), to: path.join(destDictDir, "TGPhrases.ocd2") },
+  { from: path.join(srcOpencc, "TGCharacters.ocd2"), to: path.join(destDictDir, "TGCharacters.ocd2") },
+  { from: path.join(srcOpencc, "g2s.json"), to: path.join(destConfigDir, "g2s.json") },
+  { from: path.join(srcOpencc, "GSPhrases.ocd2"), to: path.join(destDictDir, "GSPhrases.ocd2") },
+  { from: path.join(srcOpencc, "GSCharacters.ocd2"), to: path.join(destDictDir, "GSCharacters.ocd2") },
 ];
 
 function main() {
@@ -24,8 +30,10 @@ function main() {
   if (missing.length) {
     console.error(
       "[sync-dicts] 缺少 opencc/ 下的配置或词典。\n" +
-        "通规：s2tg.json、STGPhrases.ocd2、STGCharacters.ocd2（可从 https://github.com/amorphobia/opencc-tonggui/releases 获取）。\n" +
-        "古籍：s2g.json、SGPhrases.ocd2、SGCharacters.ocd2（可由 GujiCC 词表经 opencc_dict 生成）。\n" +
+        "通规简→繁：s2tg.json、STG*.ocd2（opencc-tonggui）。\n" +
+        "古籍简→繁：s2g.json、SG*.ocd2。\n" +
+        "繁→陆标繁：t2gov.json、TG*.ocd2。\n" +
+        "古籍→简：g2s.json、GS*.ocd2（GujiCC 词表经 opencc_dict）。\n" +
         "缺失文件：\n" +
         missing.map((m) => "  - " + m.from).join("\n")
     );

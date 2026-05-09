@@ -274,17 +274,32 @@ body {
   gap: 1rem;
 }
 
+/* 两列：左列为前两项（简体→…），右列为后两项；窄屏单列自上而下；整块水平居中 */
 .mode-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-auto-flow: column;
   align-items: stretch;
-  gap: 0.5rem;
-  max-width: 28rem;
+  gap: 0.5rem 0.65rem;
+  width: min(56rem, 100%);
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .mode-list {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+    width: min(28rem, 100%);
+  }
 }
 
 .mode-btn {
   appearance: none;
-  text-align: left;
+  text-align: center;
   width: 100%;
   padding: 0.65rem 0.85rem;
   border-radius: 8px;
@@ -398,7 +413,7 @@ label {
   flex-shrink: 0;
 }
 
-/* 填补图标与气泡之间的空隙，便于鼠标移入气泡而不消失 */
+/* 仅在气泡可见时启用桥接层命中，避免图标上方大片区域误触 */
 .yuangu-heiti-info-wrap::before {
   content: "";
   position: absolute;
@@ -408,6 +423,7 @@ label {
   height: 14px;
   transform: translateX(-50%);
   z-index: 79;
+  pointer-events: none;
 }
 
 .yuangu-heiti-info {
@@ -420,7 +436,7 @@ label {
   border-radius: 999px;
   background: transparent;
   color: var(--muted);
-  cursor: help;
+  cursor: pointer;
   line-height: 0;
 }
 
@@ -463,9 +479,18 @@ label {
   pointer-events: none;
 }
 
-.yuangu-heiti-info-wrap:hover .yuangu-heiti-tooltip,
-.yuangu-heiti-info-wrap:focus-within .yuangu-heiti-tooltip {
+.yuangu-heiti-info-wrap:has(.yuangu-heiti-info:hover) .yuangu-heiti-tooltip,
+.yuangu-heiti-info-wrap:has(.yuangu-heiti-tooltip:hover) .yuangu-heiti-tooltip,
+.yuangu-heiti-info-wrap:focus-within .yuangu-heiti-tooltip,
+.yuangu-heiti-info-wrap.yuangu-heiti-tip-pinned .yuangu-heiti-tooltip {
   display: block;
+  pointer-events: auto;
+}
+
+.yuangu-heiti-info-wrap:has(.yuangu-heiti-info:hover)::before,
+.yuangu-heiti-info-wrap:has(.yuangu-heiti-tooltip:hover)::before,
+.yuangu-heiti-info-wrap:focus-within::before,
+.yuangu-heiti-info-wrap.yuangu-heiti-tip-pinned::before {
   pointer-events: auto;
 }
 
@@ -593,7 +618,8 @@ textarea {
   resize: vertical;
 }
 
-#output.font-output-yuangu {
+#output.font-output-yuangu,
+#input.font-input-yuangu {
   font-family: "YuanguHeitiWeb", "PingFang SC", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
 }
 

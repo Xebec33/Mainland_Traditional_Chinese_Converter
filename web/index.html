@@ -28,13 +28,22 @@
           <button type="button" class="mode-btn" id="mode-classical" data-mode="classical">
             简体 → 古籍规范字形（《古籍印刷通用字规范字形表》）
           </button>
+          <button type="button" class="mode-btn" id="mode-t2gov" data-mode="t2gov">
+            任意繁体 → 大陆标准繁体
+          </button>
+          <button type="button" class="mode-btn" id="mode-g2s" data-mode="g2s">
+            古籍规范字形 → 简体
+          </button>
         </div>
 
         <div class="io-row">
           <div class="io-col">
             <div class="io-label-row">
               <label for="input">输入原文</label>
-              <button type="button" id="clear-input" class="io-action-btn">清空</button>
+              <div class="io-label-actions">
+                <span id="yuangu-heiti-slot-input"></span>
+                <button type="button" id="clear-input" class="io-action-btn">清空</button>
+              </div>
             </div>
             <textarea id="input" rows="12" spellcheck="false" placeholder="在此粘贴或输入简体文本"></textarea>
           </div>
@@ -55,39 +64,42 @@
             <div class="io-label-row">
               <label for="output">转换结果</label>
               <div class="io-label-actions">
-                <div id="yuangu-heiti-wrap" class="yuangu-heiti-wrap" hidden>
-                  <input type="checkbox" id="use-yuangu-heiti" class="yuangu-heiti-check" />
-                  <label for="use-yuangu-heiti" class="yuangu-heiti-label">使用源古黑体</label>
-                  <span class="yuangu-heiti-info-wrap">
-                    <button
-                      type="button"
-                      class="yuangu-heiti-info"
-                      aria-label="关于显示字体说明"
-                      aria-describedby="yuangu-heiti-tip-id"
-                    >
-                      <svg class="yuangu-heiti-info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <circle cx="8" cy="8" r="6.75" stroke="currentColor" stroke-width="1.25" />
-                        <path
-                          fill="currentColor"
-                          d="M8 4.35c.36 0 .65.29.65.65 0 .38-.29.68-.65.68a.67.67 0 01-.67-.68c0-.36.3-.65.67-.65zm-.75 2.15h1.5v5.15H7.25V6.5z"
-                        />
-                      </svg>
-                    </button>
-                    <span id="yuangu-heiti-tip-id" class="yuangu-heiti-tooltip" role="tooltip">
-                      古籍规范字形需专用字体（<a
-                        href="https://www.foundertype.com/index.php/FontInfo/index/id/6659"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >方正古籍规范宋</a
-                      >），受限于版权，本站改用<a
-                        href="https://zhuanlan.zhihu.com/p/1897044158293717296"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >源古黑体</a
-                      >替代。该字体高度还原标准字形，并修正了部分部件不统一的问题。
+                <span id="yuangu-heiti-slot-output">
+                  <div id="yuangu-heiti-wrap" class="yuangu-heiti-wrap" hidden>
+                    <input type="checkbox" id="use-yuangu-heiti" class="yuangu-heiti-check" />
+                    <label for="use-yuangu-heiti" class="yuangu-heiti-label">使用源古黑体</label>
+                    <span class="yuangu-heiti-info-wrap">
+                      <button
+                        type="button"
+                        class="yuangu-heiti-info"
+                        aria-label="关于显示字体说明"
+                        aria-describedby="yuangu-heiti-tip-id"
+                        aria-expanded="false"
+                      >
+                        <svg class="yuangu-heiti-info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <circle cx="8" cy="8" r="6.75" stroke="currentColor" stroke-width="1.25" />
+                          <path
+                            fill="currentColor"
+                            d="M8 4.35c.36 0 .65.29.65.65 0 .38-.29.68-.65.68a.67.67 0 01-.67-.68c0-.36.3-.65.67-.65zm-.75 2.15h1.5v5.15H7.25V6.5z"
+                          />
+                        </svg>
+                      </button>
+                      <span id="yuangu-heiti-tip-id" class="yuangu-heiti-tooltip" role="tooltip">
+                        古籍规范字形需专用字体（<a
+                          href="https://www.foundertype.com/index.php/FontInfo/index/id/6659"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >方正古籍规范宋</a
+                        >），受限于版权，本站改用<a
+                          href="https://zhuanlan.zhihu.com/p/1897044158293717296"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >源古黑体</a
+                        >替代。该字体高度还原标准字形，并修正了部分部件不统一的问题。
+                      </span>
                     </span>
-                  </span>
-                </div>
+                  </div>
+                </span>
                 <div class="font-size-control">
                   <label for="font-size" class="font-size-heading">字号</label>
                   <select id="font-size" class="font-size-select" aria-label="输入与输出区域字号">
@@ -103,7 +115,7 @@
                 <button type="button" id="copy-output" class="io-action-btn">复制</button>
               </div>
             </div>
-            <textarea id="output" rows="12" readonly spellcheck="false" placeholder="转换结果将显示在这里"></textarea>
+            <textarea id="output" rows="12" readonly spellcheck="false" placeholder="轉换結果將顯示在這裏"></textarea>
           </div>
         </div>
       </section>
@@ -120,11 +132,19 @@
             >
           </li>
           <li>
-            简体转古籍规范字形的 OpenCC：<a
+            简体与古籍规范字形互转的 OpenCC：<a
               href="https://github.com/forfudan/GujiCC"
               target="_blank"
               rel="noopener noreferrer"
               >GujiCC</a
+            >
+          </li>
+          <li>
+            任意繁体转大陆标准繁体的 OpenCC：<a
+              href="https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards"
+              target="_blank"
+              rel="noopener noreferrer"
+              >t2gov</a
             >
           </li>
           <li>
@@ -146,6 +166,14 @@
               target="_blank"
               rel="noopener noreferrer"
               >维基百科词条</a
+            >
+          </li>
+          <li>
+            若需进行陆标文档格式转换：<a
+              href="https://terrytian-tech.github.io/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >规范繁体字形转换器</a
             >
           </li>
         </ul>
