@@ -612,6 +612,13 @@ textarea:focus-visible {
   box-shadow: none;
 }
 
+/* 手机窄屏：输入/输出区高度减半，便于一屏内露出更多控件（桌面仍为 18rem） */
+@media (max-width: 640px) {
+  textarea {
+    height: 9rem;
+    min-height: 9rem;
+  }
+}
 
 .convert-circle {
   appearance: none;
